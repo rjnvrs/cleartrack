@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="ClearTrack compliance remediation workspace" />
+    <title>ClearTrack - Compliance, with a clear path to resolution.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="product-frame">
+        <aside class="sidebar">
+          <div class="sidebar-brand"><span class="shield">&#10003;</span> ClearTrack</div>
+          <nav aria-label="Primary navigation">
+            <button class="nav-item active" data-view="dashboard"><span>&#9638;</span> Dashboard</button>
+            <button class="nav-item" data-view="issues"><span>&#9635;</span> Issues</button>
+            <button class="nav-item" data-view="approvals"><span>&#9673;</span> Approvals <em>3</em></button>
+            <button class="nav-item" data-view="audit"><span>&#9644;</span> Audit log</button>
+            <button class="nav-item" data-view="settings"><span>&#9881;</span> Settings</button>
+          </nav>
+          <button class="sidebar-user" data-action="account" aria-label="Switch demo account"><div class="avatar">MS</div><div><strong>Maria Santos</strong><small>Issue owner</small></div><span>&#8996;</span></button>
+        </aside>
+
+        <section class="workspace">
+          <div class="workspace-head">
+            <div><h1>Compliance overview</h1><p>Tuesday, November 17, 2026</p></div>
+            <button class="primary-button" id="createIssue"><span>+</span> Create issue</button>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card"><span class="stat-icon blue">&#9635;</span><div><small>Open issues</small><strong>24</strong></div></div>
+            <div class="stat-card"><span class="stat-icon red">!</span><div><small>Overdue</small><strong>6</strong></div></div>
+            <div class="stat-card"><span class="stat-icon green">&#10003;</span><div><small>Completed</small><strong>48</strong></div></div>
+            <div class="stat-card"><span class="stat-icon amber">&#9675;</span><div><small>Awaiting review</small><strong>3</strong></div></div>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel issues-panel">
+              <div class="panel-heading"><h2>Needs attention</h2><div class="filters"><label class="search"><input id="search" placeholder="Search issues" /></label><select id="severity"><option value="all">Severity</option><option>Critical</option><option>High</option><option>Medium</option></select><select id="owner"><option value="all">Owner</option><option>Maria Santos</option><option>Daniel Kim</option><option>Jordan Lee</option></select></div></div>
+              <div class="table-wrap"><table><thead><tr><th>Issue ID</th><th>Issue</th><th>Severity</th><th>Status</th><th>Owner</th><th>Due date</th></tr></thead><tbody id="issueRows"></tbody></table></div>
+            </section>
+            <aside class="panel side-panel"><div class="ai-banner"><div class="sparkle">?</div><div><strong>AI remediation</strong><p>3 plans ready for review</p></div><button class="mini-button" id="reviewPlans">Review plans</button></div><div class="activity"><h2>Recent activity</h2><div class="activity-row"><span class="dot green-dot">?</span><p>AI generated remediation plan for <b>CMP-1042</b><small>10:24 AM</small></p></div><div class="activity-row"><span class="dot purple-dot">•</span><p>Evidence uploaded for <b>CMP-1038</b><small>9:47 AM</small></p></div><div class="activity-row"><span class="dot blue-dot">?</span><p>Approval requested for <b>CMP-1031</b><small>9:15 AM</small></p></div></div></aside>
+          </div>
+
+          <div class="lower-grid">
+            <section class="detail-card panel" id="detailCard"><div class="detail-top"><span class="back">?</span><span>Issues</span><b>/</b><span>CMP-1042</span></div><div class="detail-title"><div><h2>Access review evidence missing</h2><p>Owner: <b>Maria Santos</b> ? Due: <b>Nov 20, 2026</b></p></div><div class="badges"><span class="badge high">High</span><span class="badge progress">In progress</span></div></div><div class="description"><b>Description</b><p>Quarterly privileged access review requires documented evidence and reviewer sign-off.</p></div><div class="tabs"><button class="selected">Overview</button><button>Evidence (2)</button><button>Activity</button></div><div class="detail-columns"><div><div class="evidence-head"><h3>Evidence (2)</h3><button class="outline-button" id="addEvidence">+ Add evidence</button></div><div class="evidence-item"><span class="file-icon pdf">•</span><div><b>access-review-Q4.pdf</b><small>PDF · 1.2 MB · Uploaded Nov 16, 2026</small></div><span>.........</span></div><div class="evidence-item"><span class="file-icon link">•</span><div><b>Review ticket IAM-208</b><small>Reference · IAM system · Updated Nov 15, 2026</small></div><span>.........</span></div></div><div class="remediation"><h3>? AI remediation plan</h3><p><b>Recommended steps to resolve this issue:</b></p><ol><li>Confirm review scope<small>Validate in-scope accounts and review period.</small></li><li>Collect owner sign-off<small>Obtain reviewer approval and documented sign-off.</small></li><li>Submit evidence for review<small>Upload evidence for independent approval.</small></li></ol></div></div><div class="detail-footer"><span>• Closure requires independent approval.</span><button class="primary-button" id="submitReview">? Submit for review</button></div></section>
+
+            <section class="approval-card panel"><div class="detail-top"><span class="back">?</span><span>Review remediation</span></div><div class="approval-sub">Issue: <b>CMP-1042</b> <span class="badge approval">Human approval required</span></div><div class="approval-columns"><div class="proposal"><h3>? Proposed action</h3><p>Close issue after evidence verification.</p><hr /><div><span>Owner</span> Requester <b>Maria Santos</b></div><div><span>Owner</span> Reviewer <b>Daniel Kim</b></div><div><span>?</span> Evidence <a>access-review-Q4.pdf •</a></div><div><span>?</span> Version <b>1.0</b></div></div><div class="checklist"><h3>Review checklist</h3><label><input type="checkbox" checked /> Evidence reviewed</label><label><input type="checkbox" checked /> Acceptance criteria met</label><label><input type="checkbox" /> Independent reviewer confirmed</label></div></div><div class="approval-actions"><button class="approve" id="approve">? Approve &amp; close</button><button class="request">Request changes</button></div><div class="audit-timeline"><h3>Audit timeline</h3><div><span>?</span><p>AI generated remediation plan<small>Nov 16, 2026, 10:24 AM</small></p></div><div><span>?</span><p>Maria uploaded evidence (access-review-Q4.pdf)<small>Nov 17, 2026, 2:18 PM</small></p></div><div><span class="hollow">?</span><p>Approval requested<small>Nov 17, 2026, 9:15 AM</small></p></div></div><div class="ai-note">? AI cannot approve its own actions.</div></section>
+          </div>
+        </section>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status"></div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
+
