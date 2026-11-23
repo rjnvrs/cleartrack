@@ -66,4 +66,4 @@ Workspace preferences load from `GET /api/v1/settings`. Administrators can save 
 
 ## 10. Persistence and production boundary
 
-The demo persists mutations to `data/cleartrack-state.json`. Production deployment should replace the maps and JSON file with PostgreSQL, durable identity, private evidence storage, CSRF protection, and a real malware scanner while retaining these API contracts and domain rules.
+The demo persists mutations to a SQLite snapshot at `data/cleartrack.sqlite` when the runtime provides Node's SQLite API, with `data/cleartrack-state.json` as a compatibility fallback. Uploaded evidence bytes are stored below `data/evidence` in quarantine, hashed with SHA-256, and exposed only after scanning. Production deployment should replace this local SQLite/file adapter with PostgreSQL, durable identity, private object storage, CSRF protection, and a real malware scanner while retaining these API contracts and domain rules. The MCP-compatible JSON-RPC transport is available at `/mcp` for initialize, tools/list, and tools/call requests.
