@@ -1,4 +1,4 @@
-export function approvalsView(){return `<div class="workspace-head"><div><h1>Approvals</h1><p>Review proposed remediation actions and closure requests.</p></div><button class="request" data-action="reviewer">Switch to Daniel Kim - reviewer</button></div><section class="panel page-panel"><div class="approval-summary"><span class="status-dot"></span><b id="approvalCount">Loading approval queue</b><span class="muted">Independent review keeps closure decisions trustworthy.</span></div><div class="approval-list" id="approvalList"><div class="empty">Loading approval requests</div></div></section>`}
+export function approvalsView(){return `<div class="workspace-head"><div><h1>Approvals</h1><p>Review proposed remediation actions and closure requests.</p></div><div class="workspace-actions"><button class="request" data-action="refresh">Refresh queue</button><button class="request" data-action="reviewer">Switch to Daniel Kim - reviewer</button></div></div><section class="panel page-panel"><div class="approval-summary"><span class="status-dot"></span><b id="approvalCount">Loading approval queue</b><span class="muted">Independent review keeps closure decisions trustworthy.</span></div><div class="approval-list" id="approvalList"><div class="empty">Loading approval requests</div></div></section>`}
 
 const escapeHtml=(value)=>String(value??'').replace(/[&<>"']/g,character=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
 
@@ -7,8 +7,10 @@ export async function bindApprovals(root,{notify,api}){
   const me=await api('/api/v1/me').catch(()=>({user:{},permissions:[]}));
   const canApprove=(me.permissions||[]).includes('actions:approve');
   const switchButton=root.querySelector('[data-action="reviewer"]');
+  const refreshButton=root.querySelector('[data-action="refresh"]');
   if(switchButton&&me.user?.role==='compliance_reviewer') switchButton.classList.add('hidden');
   const load=async()=>{
+    if(refreshButton)refreshButton.disabled=true;
     try{
       const result=await api('/api/v1/approvals');
       const count=result.items?.length||0;
@@ -26,7 +28,7 @@ export async function bindApprovals(root,{notify,api}){
         return `<article class="approval-row" data-approval-id="${escapeHtml(item.id)}"><div><span class="badge approval">Human approval required</span><h2>${issueKey} - ${action}</h2><p>Requested by ${requester} - Issue version ${escapeHtml(item.issueVersion)} - Expires ${new Date(item.expiresAt).toLocaleDateString()}</p><div class="proposal-line"><b>Issue:</b> ${issue} <span class="muted"> - Pending independent review</span></div><div class="approval-evidence"><b>Evidence:</b> ${item.evidenceState?.ready?'Ready for verification':item.evidenceState?.quarantined?'Scanning in progress':'Missing evidence'}</div></div>${reviewerControls}</article>`;
       }).join('')||'<div class="empty">You are all caught up. No approval requests need review.</div>';
       bindActions();
-    }catch(error){list.innerHTML='<div class="empty">Approval queue could not be loaded for this account.<br><button class="request" data-action="retry">Try again</button></div>';notify(error.message);list.querySelector('[data-action="retry"]')?.addEventListener('click',load)}
+    }catch(error){list.innerHTML='<div class="empty">Approval queue could not be loaded for this account.<br><button class="request" data-action="retry">Try again</button></div>';notify(error.message);list.querySelector('[data-action="retry"]')?.addEventListener('click',load)}finally{if(refreshButton)refreshButton.disabled=false}
   };
   const bindActions=()=>{
     list.querySelectorAll('[data-action="approve"]').forEach(button=>button.addEventListener('click',async()=>{
@@ -42,5 +44,6 @@ export async function bindApprovals(root,{notify,api}){
     }));
   };
   switchButton?.addEventListener('click',async()=>{await fetch('/api/v1/auth/demo-login',{method:'POST',credentials:'include',headers:{'content-type':'application/json'},body:JSON.stringify({email:'daniel@cleartrack.demo'})});localStorage.setItem('cleartrack.demoEmail','daniel@cleartrack.demo');notify('Signed in as Daniel Kim.');load()});
+  refreshButton?.addEventListener('click',load);
   await load();
 }
